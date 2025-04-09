@@ -14,8 +14,7 @@ const GameBoard: React.FC = () => {
     <div className="max-w-2xl mx-auto px-4 py-12">
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold mb-2 flex items-center justify-center">
-          <span className="text-mystery-400 mr-2">Clue</span>
-          <span className="text-clue-400">Quest</span>
+          <span className="text-mystery-400 mr-2">Squirtle</span>
           <Sparkles className="ml-2 text-clue-300 w-6 h-6" />
         </h1>
         <p className="text-muted-foreground">
