@@ -26,7 +26,7 @@ const GameStatus: React.FC = () => {
           <>
             <h2 className="text-2xl font-bold text-destructive mb-2">Game Over</h2>
             <p className="text-center mb-6">
-              The mystery person was <span className="font-bold text-clue-400">Nikola Tesla</span>.
+              The mystery person was <span className="font-bold text-clue-400">Lana Rhoades</span>.
             </p>
           </>
         )}
