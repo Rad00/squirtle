@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -23,10 +22,10 @@ const MYSTERY_PERSON = "Nikola Tesla";
 // All clues in order of reveal - change these clues for a new person
 const ALL_CLUES = [
   "Gender: Male",
-  "Profession: Inventor and electrical engineer",
-  "Era: Lived during the late 19th and early 20th century",
-  "Known for: Wireless transmission of electricity and inventions in the field of electrical energy",
-  "Characteristic: Had a photographic memory"
+  "Country of birth: Serbia (Austrian Empire at that time)",
+  "Age: Died at 86 years old",
+  "PH rank: Not applicable",
+  "PH video views: Not applicable"
 ];
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
