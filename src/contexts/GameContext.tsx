@@ -17,16 +17,16 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-// The mystery person to guess - spremenite to za novo zmagovalno osebo
+// The mystery person to guess - change this for a new winning person
 const MYSTERY_PERSON = "Nikola Tesla";
 
-// All clues in order of reveal - spremenite te namige za novo osebo
+// All clues in order of reveal - change these clues for a new person
 const ALL_CLUES = [
-  "Spol: Moški",
-  "Poklic: Izumitelj in elektroinženir",
-  "Obdobje: Živel na prelomu 19. in 20. stoletja",
-  "Znan po: Brezžičnem prenosu elektrike in izumih na področju električne energije",
-  "Značilnost: Imel je fotografski spomin"
+  "Gender: Male",
+  "Profession: Inventor and electrical engineer",
+  "Era: Lived during the late 19th and early 20th century",
+  "Known for: Wireless transmission of electricity and inventions in the field of electrical energy",
+  "Characteristic: Had a photographic memory"
 ];
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -52,8 +52,8 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsWinner(true);
       setIsGameOver(true);
       toast({
-        title: "Pravilno!",
-        description: "Čestitke! Pravilno ste uganili!",
+        title: "Correct!",
+        description: "Congratulations! You've guessed correctly!",
         variant: "default",
       });
     } else {
@@ -64,8 +64,8 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           // No more clues, game over
           setIsGameOver(true);
           toast({
-            title: "Konec igre!",
-            description: `Pravilen odgovor je bil ${MYSTERY_PERSON}.`,
+            title: "Game Over!",
+            description: `The correct answer was ${MYSTERY_PERSON}.`,
             variant: "destructive",
           });
         } else {
@@ -73,16 +73,16 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           setCurrentClue(currentClue + 1);
           setAttempts(1);
           toast({
-            title: "Nov namig razkrit!",
-            description: "Porabili ste vse poskuse. Razkrit je bil nov namig.",
+            title: "New Clue Revealed!",
+            description: "You've used all attempts. A new clue has been revealed.",
           });
         }
       } else {
         // Still have attempts left for this clue
         setAttempts(attempts + 1);
         toast({
-          title: "Napačno",
-          description: `To ni pravilno. Poskusi znova! (${attempts}/${maxAttempts})`,
+          title: "Incorrect",
+          description: `That's not right. Try again! (${attempts}/${maxAttempts})`,
           variant: "destructive",
         });
       }
