@@ -17,15 +17,15 @@ interface GameContextType {
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 // The mystery person to guess - change this for a new winning person
-const MYSTERY_PERSON = "Nikola Tesla";
+const MYSTERY_PERSON = "Lana Rhoades";
 
 // All clues in order of reveal - change these clues for a new person
 const ALL_CLUES = [
-  "Gender: Male",
-  "Country of birth: Serbia (Austrian Empire at that time)",
-  "Age: Died at 86 years old",
-  "PH rank: Not applicable",
-  "PH video views: Not applicable"
+  "Gender: Female",
+  "Country of birth: Slovenia",
+  "Age: 28",
+  "PH rank: 4",
+  "PH video views: 2.5 Billion"
 ];
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
