@@ -41,11 +41,6 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
         setImageLoading(false);
       };
       reader.onerror = () => {
-        toast({
-          title: "Error loading image",
-          description: "Failed to load the image. Please try a different image.",
-          variant: "destructive",
-        });
         setImageLoading(false);
       };
       reader.readAsDataURL(file);
