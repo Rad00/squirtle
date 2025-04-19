@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface Winner {
@@ -35,9 +36,13 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
   }, []);
 
   useEffect(() => {
-    if (winners.length === 0) return;
-    
     try {
+      // If there are no winners, clear localStorage
+      if (winners.length === 0) {
+        localStorage.removeItem('gameWinners');
+        return;
+      }
+      
       const mostRecentWinner = winners[winners.length - 1];
       
       try {
@@ -87,7 +92,7 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   const removeWinner = (id: string) => {
-    setWinners(winners.filter(winner => winner.id !== id));
+    setWinners(prevWinners => prevWinners.filter(winner => winner.id !== id));
   };
 
   return (
