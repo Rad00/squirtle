@@ -24,11 +24,10 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
     if (file) {
       setImageLoading(true);
       
-      // Check file size before loading (max 100KB)
-      if (file.size > 100 * 1024) {
+      if (file.size > 500 * 1024) {
         toast({
           title: "Image too large",
-          description: "Please use an image smaller than 100KB to avoid storage issues.",
+          description: "Please use an image smaller than 500KB to avoid storage issues.",
           variant: "destructive",
         });
         setImageLoading(false);
@@ -137,7 +136,7 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-2">Clue 5 - Upload Image (max 100KB)</label>
+        <label className="block text-sm font-medium mb-2">Clue 5 - Upload Image (max 500KB)</label>
         <div className="flex items-center gap-4">
           <Input
             type="file"
