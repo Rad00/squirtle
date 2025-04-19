@@ -3,7 +3,8 @@ import React from 'react';
 import { useGame } from '@/contexts/GameContext';
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Button } from '@/components/ui/button';
-import { Sparkles, RefreshCw, Trophy } from 'lucide-react';
+import { Trophy, RefreshCw } from 'lucide-react';
+import { Instagram, Twitter } from 'lucide-react';
 
 const GameStatus: React.FC = () => {
   const { isGameOver, isWinner, resetGame, ranking } = useGame();
@@ -22,8 +23,17 @@ const GameStatus: React.FC = () => {
             </div>
             <h2 className="text-2xl font-bold text-clue-500 mb-2">Congratulations!</h2>
             <p className="text-center mb-2">
-              You successfully guessed the mystery person!
+              You successfully guessed the mystery person:
             </p>
+            <p className="text-xl font-bold text-mystery-600 mb-2">{currentWinner.name}</p>
+            <div className="flex gap-4 mb-4">
+              <a href="#" className="text-gray-600 hover:text-pink-600 transition-colors">
+                <Instagram className="w-6 h-6" />
+              </a>
+              <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
+                <Twitter className="w-6 h-6" />
+              </a>
+            </div>
             <p className="text-lg font-semibold text-mystery-500 mb-6">
               You're in the {ranking}!
             </p>
