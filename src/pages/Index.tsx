@@ -5,16 +5,14 @@ import { useGame } from '@/contexts/GameContext';
 import ClueCard from '@/components/ClueCard';
 import GuessInput from '@/components/GuessInput';
 import GameStatus from '@/components/GameStatus';
-import { Sparkles, AlertCircle } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { AdminPanelProvider } from '@/contexts/AdminPanelContext';
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const GameBoard: React.FC = () => {
   const { revealedClues } = useGame();
   const { winners } = useAdminPanel();
-  const navigate = useNavigate();
   
   // Check if there are any winners
   const hasWinners = winners && winners.length > 0;
@@ -38,14 +36,12 @@ const GameBoard: React.FC = () => {
 
       {!hasWinners ? (
         <div className="text-center p-6 bg-card border border-border rounded-lg shadow-lg">
-          <AlertCircle className="mx-auto h-12 w-12 text-amber-500 mb-4" />
-          <h2 className="text-xl font-semibold mb-2">No Mystery Person Available</h2>
-          <p className="mb-4 text-muted-foreground">
-            Please go to the Admin Panel and add a mystery person with clues first.
-          </p>
-          <Button onClick={() => navigate('/admin')} className="bg-clue-500 hover:bg-clue-600">
-            Go to Admin Panel
-          </Button>
+          <Alert>
+            <AlertTitle className="text-xl font-semibold">Welcome to the Game!</AlertTitle>
+            <AlertDescription className="text-muted-foreground">
+              The game is being set up. Please check back soon for a new challenge!
+            </AlertDescription>
+          </Alert>
         </div>
       ) : (
         <>
