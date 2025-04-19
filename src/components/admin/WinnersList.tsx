@@ -22,10 +22,21 @@ export const WinnersList = () => {
           <TableRow key={winner.id}>
             <TableCell>{winner.name}</TableCell>
             <TableCell>
-              <ul className="list-disc list-inside">
-                {winner.clues.map((clue, index) => (
-                  <li key={index} className="truncate">{clue}</li>
-                ))}
+              <ul className="list-disc list-inside space-y-2">
+                {winner.clues.map((clue, index) => {
+                  const hasImage = clue.includes('[Image:');
+                  const imageUrl = hasImage ? clue.match(/\[Image: (.*?)\]/)?.[1] : null;
+                  const textClue = hasImage ? clue.replace(/\[Image: .*?\]/, '').trim() : clue;
+
+                  return (
+                    <li key={index} className="truncate">
+                      {textClue}
+                      {imageUrl && (
+                        <img src={imageUrl} alt="Clue" className="mt-1 w-20 h-20 object-cover rounded" />
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </TableCell>
             <TableCell>

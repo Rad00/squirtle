@@ -5,6 +5,7 @@ interface Winner {
   id: string;
   name: string;
   clues: string[];
+  imageUrl?: string;
 }
 
 interface AdminPanelContextType {
