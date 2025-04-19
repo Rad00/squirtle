@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GameProvider } from '@/contexts/GameContext';
 import { useGame } from '@/contexts/GameContext';
 import ClueCard from '@/components/ClueCard';
@@ -8,13 +8,21 @@ import GameStatus from '@/components/GameStatus';
 import { Sparkles, AlertCircle } from 'lucide-react';
 import { AdminPanelProvider } from '@/contexts/AdminPanelContext';
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const GameBoard: React.FC = () => {
   const { revealedClues } = useGame();
   const { winners } = useAdminPanel();
+  const navigate = useNavigate();
   
   // Check if there are any winners
-  const hasWinners = winners.length > 0;
+  const hasWinners = winners && winners.length > 0;
+  
+  // Ensure the console shows what we're working with for debugging
+  useEffect(() => {
+    console.log('Current winners in GameBoard:', winners);
+  }, [winners]);
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
@@ -33,8 +41,11 @@ const GameBoard: React.FC = () => {
           <AlertCircle className="mx-auto h-12 w-12 text-amber-500 mb-4" />
           <h2 className="text-xl font-semibold mb-2">No Mystery Person Available</h2>
           <p className="mb-4 text-muted-foreground">
-            Please go to the <a href="/admin" className="text-blue-500 hover:underline">Admin Panel</a> and add a mystery person with clues first.
+            Please go to the Admin Panel and add a mystery person with clues first.
           </p>
+          <Button onClick={() => navigate('/admin')} className="bg-clue-500 hover:bg-clue-600">
+            Go to Admin Panel
+          </Button>
         </div>
       ) : (
         <>
@@ -58,21 +69,14 @@ const GameBoard: React.FC = () => {
   );
 };
 
-// Wrap the GameBoard in AdminPanelProvider and GameProvider
-const GameProviderWrapper: React.FC = () => {
-  return (
-    <GameProvider>
-      <GameBoard />
-    </GameProvider>
-  );
-};
-
-// The main component that wraps everything with AdminPanelProvider
+// The main component that wraps everything with providers
 const Index: React.FC = () => {
   return (
     <div className="min-h-screen w-full">
       <AdminPanelProvider>
-        <GameProviderWrapper />
+        <GameProvider>
+          <GameBoard />
+        </GameProvider>
       </AdminPanelProvider>
     </div>
   );
