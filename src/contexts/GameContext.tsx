@@ -32,7 +32,7 @@ const ALL_CLUES = [
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentClue, setCurrentClue] = useState(0);
   const [attempts, setAttempts] = useState(1);
-  const [maxAttempts] = useState(3);
+  const [maxAttempts] = useState(2); // Changed from 3 to 2
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
   const [guessValue, setGuessValue] = useState('');
