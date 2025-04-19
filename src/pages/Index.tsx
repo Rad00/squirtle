@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { GameProvider } from '@/contexts/GameContext';
 import { useGame } from '@/contexts/GameContext';
 import ClueCard from '@/components/ClueCard';
@@ -37,9 +37,9 @@ const GameBoard: React.FC = () => {
       {!hasWinners ? (
         <div className="text-center p-6 bg-card border border-border rounded-lg shadow-lg">
           <Alert>
-            <AlertTitle className="text-xl font-semibold">Welcome to the Game!</AlertTitle>
+            <AlertTitle className="text-xl font-semibold">No Active Game</AlertTitle>
             <AlertDescription className="text-muted-foreground">
-              The game is being set up. Please check back soon for a new challenge!
+              There is currently no game available. Please check back later.
             </AlertDescription>
           </Alert>
         </div>
