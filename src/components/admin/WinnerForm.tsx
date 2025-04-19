@@ -40,14 +40,6 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
         setImageUrl(result);
         setImageLoading(false);
       };
-      reader.onerror = () => {
-        toast({
-          title: "Error loading image",
-          description: "Failed to load the image. Please try a different image.",
-          variant: "destructive",
-        });
-        setImageLoading(false);
-      };
       reader.readAsDataURL(file);
     }
   };
@@ -151,7 +143,7 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
             className="flex items-center gap-2 px-4 py-2 border rounded-md cursor-pointer hover:bg-gray-50"
           >
             <Upload className="w-4 h-4" />
-            {imageLoading ? "Loading..." : "Choose Image"}
+            Choose Image
           </label>
           {imageUrl && (
             <img src={imageUrl} alt="Preview" className="w-20 h-20 object-cover rounded" />
