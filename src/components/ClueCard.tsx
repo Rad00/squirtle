@@ -10,8 +10,16 @@ interface ClueCardProps {
 const ClueCard: React.FC<ClueCardProps> = ({ clue, index }) => {
   // Check if the clue contains an image URL
   const hasImage = clue.includes('[Image:');
-  const imageUrl = hasImage ? clue.match(/\[Image: (.*?)\]/)?.[1] : null;
-  const textClue = hasImage ? clue.replace(/\[Image: .*?\]/, '').trim() : clue;
+  
+  // Extract the image URL more reliably with a proper regex
+  let imageUrl = null;
+  if (hasImage) {
+    const match = clue.match(/\[Image:\s*(.*?)\]/);
+    imageUrl = match ? match[1] : null;
+  }
+  
+  // Extract the text portion of the clue
+  const textClue = hasImage ? clue.replace(/\[Image:\s*.*?\]/, '').trim() : clue;
 
   return (
     <div 
@@ -26,7 +34,15 @@ const ClueCard: React.FC<ClueCardProps> = ({ clue, index }) => {
       </div>
       {imageUrl && (
         <div className="mt-2">
-          <img src={imageUrl} alt="Clue" className="max-w-full h-auto rounded-lg" />
+          <img 
+            src={imageUrl} 
+            alt="Clue" 
+            className="max-w-full h-auto rounded-lg object-contain" 
+            onError={(e) => {
+              console.error("Error loading image:", imageUrl);
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
         </div>
       )}
     </div>
