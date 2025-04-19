@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { GameProvider } from '@/contexts/GameContext';
 import { useGame } from '@/contexts/GameContext';
@@ -14,10 +13,8 @@ const GameBoard: React.FC = () => {
   const { revealedClues } = useGame();
   const { winners } = useAdminPanel();
   
-  // Check if there are any winners
   const hasWinners = winners && winners.length > 0;
   
-  // Ensure the console shows what we're working with for debugging
   useEffect(() => {
     console.log('Current winners in GameBoard:', winners);
   }, [winners]);
@@ -70,7 +67,6 @@ const GameBoard: React.FC = () => {
   );
 };
 
-// The main component that wraps everything with providers
 const Index: React.FC = () => {
   return (
     <div className="min-h-screen w-full">
