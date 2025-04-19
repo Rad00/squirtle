@@ -26,40 +26,45 @@ const GameStatus: React.FC = () => {
               You successfully guessed the mystery person:
             </p>
             <p className="text-xl font-bold text-mystery-600 mb-2">{currentWinner.name}</p>
-            <div className="flex gap-4 mb-4">
-              {currentWinner.socialMedia?.instagram && (
-                <a 
-                  href={currentWinner.socialMedia.instagram} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-pink-600 transition-colors"
-                >
-                  <Instagram className="w-6 h-6" />
-                </a>
-              )}
-              {currentWinner.socialMedia?.twitter && (
-                <a 
-                  href={currentWinner.socialMedia.twitter} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-500 transition-colors"
-                >
-                  <Twitter className="w-6 h-6" />
-                </a>
-              )}
-            </div>
-            <p className="text-lg font-semibold text-mystery-500 mb-6">
-              You're in the {ranking}!
-            </p>
           </>
         ) : (
           <>
             <h2 className="text-2xl font-bold text-destructive mb-2">Game Over</h2>
-            <p className="text-center mb-6">
+            <p className="text-center mb-4">
               The mystery person was <span className="font-bold text-clue-400">{currentWinner.name}</span>.
             </p>
           </>
         )}
+
+        <div className="flex gap-4 mb-4">
+          {currentWinner.socialMedia?.instagram && (
+            <a 
+              href={currentWinner.socialMedia.instagram} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-pink-600 transition-colors"
+            >
+              <Instagram className="w-6 h-6" />
+            </a>
+          )}
+          {currentWinner.socialMedia?.twitter && (
+            <a 
+              href={currentWinner.socialMedia.twitter} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-blue-500 transition-colors"
+            >
+              <Twitter className="w-6 h-6" />
+            </a>
+          )}
+        </div>
+
+        {isWinner && (
+          <p className="text-lg font-semibold text-mystery-500 mb-6">
+            You're in the {ranking}!
+          </p>
+        )}
+
         <Button 
           onClick={resetGame} 
           className="bg-mystery-600 hover:bg-mystery-700"
@@ -73,3 +78,4 @@ const GameStatus: React.FC = () => {
 };
 
 export default GameStatus;
+
