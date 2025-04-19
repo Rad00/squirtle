@@ -4,8 +4,6 @@ import { useGame } from '@/contexts/GameContext';
 import ClueCard from '@/components/ClueCard';
 import GuessInput from '@/components/GuessInput';
 import GameStatus from '@/components/GameStatus';
-import { Sparkles } from 'lucide-react';
-import { AdminPanelProvider } from '@/contexts/AdminPanelContext';
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
@@ -29,7 +27,6 @@ const GameBoard: React.FC = () => {
             className="h-12 w-12 mr-4"
           />
           <span className="text-mystery-400 mr-2">Squirtle</span>
-          <Sparkles className="ml-2 text-clue-300 w-6 h-6" />
         </h1>
         <p className="text-muted-foreground">
           Guess today's adult actor
