@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Upload } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
 
 interface WinnerFormProps {
   onComplete?: () => void;
@@ -25,11 +24,6 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       setImageLoading(true);
       
       if (file.size > 500 * 1024) {
-        toast({
-          title: "Image too large",
-          description: "Please use an image smaller than 500KB to avoid storage issues.",
-          variant: "destructive",
-        });
         setImageLoading(false);
         return;
       }
@@ -61,11 +55,6 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
         }
       });
       
-      toast({
-        title: "Winner Added",
-        description: `${name} has been added as a mystery person.`,
-      });
-      
       setName('');
       setClues(['', '', '', '']);
       setImageUrl('');
@@ -75,12 +64,6 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       if (onComplete) {
         onComplete();
       }
-    } else {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all text clues and upload an image for the final clue.",
-        variant: "destructive",
-      });
     }
   };
 

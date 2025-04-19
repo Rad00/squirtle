@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { toast } from '@/components/ui/use-toast';
 import { useAdminPanel } from './AdminPanelContext';
 
 interface GameContextType {
@@ -50,14 +49,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const checkGuess = () => {
-    if (isGameOver || !currentWinner) {
-      toast({
-        title: "No Game Available",
-        description: "Please add a mystery person in the Admin Panel first.",
-        variant: "destructive",
-      });
-      return;
-    }
+    if (isGameOver || !currentWinner) return;
     
     const normalizedGuess = guessValue.trim().toLowerCase();
     const normalizedAnswer = currentWinner.name.toLowerCase();
@@ -66,35 +58,16 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsWinner(true);
       setIsGameOver(true);
       setRanking(calculateRanking(currentClue));
-      toast({
-        title: "Correct!",
-        description: `Congratulations! You've guessed correctly! You're in the ${calculateRanking(currentClue)}!`,
-        variant: "default",
-      });
     } else {
       if (attempts >= maxAttempts) {
         if (currentClue >= (currentWinner.clues.length - 1)) {
           setIsGameOver(true);
-          toast({
-            title: "Game Over!",
-            description: `The correct answer was ${currentWinner.name}.`,
-            variant: "destructive",
-          });
         } else {
           setCurrentClue(currentClue + 1);
           setAttempts(1);
-          toast({
-            title: "New Clue Revealed!",
-            description: "You've used all attempts. A new clue has been revealed.",
-          });
         }
       } else {
         setAttempts(attempts + 1);
-        toast({
-          title: "Incorrect",
-          description: `That's not right. Try again! (${attempts}/${maxAttempts})`,
-          variant: "destructive",
-        });
       }
     }
     
