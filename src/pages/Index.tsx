@@ -22,12 +22,12 @@ const GameBoard: React.FC = () => {
     <div className="max-w-2xl mx-auto px-4 py-12">
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold mb-2 flex items-center justify-center">
+          <span className="text-mystery-400 mr-2">Squirtle</span>
           <img 
             src="/lovable-uploads/d1584ad0-67f6-4960-a397-4fb15061350a.png" 
             alt="Squirtle Logo" 
-            className="h-12 w-12 mr-4"
+            className="h-12 w-12 ml-4 rounded-lg"  // Changed to rounded-lg (8px) and moved to right
           />
-          <span className="text-mystery-400 mr-2">Squirtle</span>
         </h1>
         <p className="text-muted-foreground">
           Guess today's adult actor
@@ -78,3 +78,4 @@ const Index: React.FC = () => {
 };
 
 export default Index;
+
