@@ -3,10 +3,10 @@ import React from 'react';
 import { useGame } from '@/contexts/GameContext';
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Button } from '@/components/ui/button';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { Sparkles, RefreshCw, Trophy } from 'lucide-react';
 
 const GameStatus: React.FC = () => {
-  const { isGameOver, isWinner, resetGame } = useGame();
+  const { isGameOver, isWinner, resetGame, ranking } = useGame();
   const { winners } = useAdminPanel();
   const currentWinner = winners.length > 0 ? winners[winners.length - 1] : null;
 
@@ -18,11 +18,14 @@ const GameStatus: React.FC = () => {
         {isWinner ? (
           <>
             <div className="text-clue-500 text-5xl mb-2">
-              <Sparkles className="w-12 h-12 animate-pulse-soft" />
+              <Trophy className="w-12 h-12 animate-pulse-soft" />
             </div>
             <h2 className="text-2xl font-bold text-clue-500 mb-2">Congratulations!</h2>
-            <p className="text-center mb-6">
+            <p className="text-center mb-2">
               You successfully guessed the mystery person!
+            </p>
+            <p className="text-lg font-semibold text-mystery-500 mb-6">
+              You're in the {ranking}!
             </p>
           </>
         ) : (

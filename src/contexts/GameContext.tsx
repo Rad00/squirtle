@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useAdminPanel } from './AdminPanelContext';
@@ -11,6 +10,7 @@ interface GameContextType {
   isWinner: boolean;
   revealedClues: string[];
   guessValue: string;
+  ranking: string;
   checkGuess: () => void;
   setGuessValue: (value: string) => void;
   resetGame: () => void;
@@ -25,15 +25,29 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
   const [guessValue, setGuessValue] = useState('');
-  
-  // Get the latest winner from AdminPanelContext
+  const [ranking, setRanking] = useState<string>('');
+
   const { winners } = useAdminPanel();
   const currentWinner = winners.length > 0 ? winners[winners.length - 1] : null;
-  
-  // Get currently revealed clues from the current winner
+
   const revealedClues = currentWinner 
     ? currentWinner.clues.slice(0, currentClue + 1)
     : [];
+
+  const calculateRanking = (clueIndex: number): string => {
+    switch (clueIndex) {
+      case 0:
+        return 'Top 1%';
+      case 1:
+        return 'Top 5%';
+      case 2:
+        return 'Top 25%';
+      case 3:
+        return 'Top 50%';
+      default:
+        return 'Top 90%';
+    }
+  };
 
   const checkGuess = () => {
     if (isGameOver || !currentWinner) {
@@ -45,25 +59,21 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
     
-    // Normalize guesses for case-insensitive comparison
     const normalizedGuess = guessValue.trim().toLowerCase();
     const normalizedAnswer = currentWinner.name.toLowerCase();
     
     if (normalizedGuess === normalizedAnswer) {
-      // Correct guess!
       setIsWinner(true);
       setIsGameOver(true);
+      setRanking(calculateRanking(currentClue));
       toast({
         title: "Correct!",
-        description: "Congratulations! You've guessed correctly!",
+        description: `Congratulations! You've guessed correctly! You're in the ${calculateRanking(currentClue)}!`,
         variant: "default",
       });
     } else {
-      // Wrong guess
       if (attempts >= maxAttempts) {
-        // Used all attempts for this clue
         if (currentClue >= (currentWinner.clues.length - 1)) {
-          // No more clues, game over
           setIsGameOver(true);
           toast({
             title: "Game Over!",
@@ -71,7 +81,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             variant: "destructive",
           });
         } else {
-          // Reveal next clue
           setCurrentClue(currentClue + 1);
           setAttempts(1);
           toast({
@@ -80,7 +89,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           });
         }
       } else {
-        // Still have attempts left for this clue
         setAttempts(attempts + 1);
         toast({
           title: "Incorrect",
@@ -90,7 +98,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
     
-    // Clear the input field
     setGuessValue('');
   };
 
@@ -112,6 +119,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isWinner,
         revealedClues,
         guessValue,
+        ranking,
         checkGuess,
         setGuessValue,
         resetGame,
