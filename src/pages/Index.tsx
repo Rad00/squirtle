@@ -1,10 +1,11 @@
+
 import React, { useEffect } from 'react';
 import { GameProvider } from '@/contexts/GameContext';
 import { useGame } from '@/contexts/GameContext';
 import ClueCard from '@/components/ClueCard';
 import GuessInput from '@/components/GuessInput';
 import GameStatus from '@/components/GameStatus';
-import { useAdminPanel } from '@/contexts/AdminPanelContext';
+import { AdminPanelProvider, useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const GameBoard: React.FC = () => {
