@@ -14,7 +14,7 @@ interface WinnerFormProps {
 export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
   const { addWinner } = useAdminPanel();
   const [name, setName] = useState('');
-  const [clues, setClues] = useState(['', '', '', '', '']);
+  const [clues, setClues] = useState(['', '', '', '']);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [imageLoading, setImageLoading] = useState(false);
 
@@ -37,7 +37,6 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
-        // Compress image if needed (this is a simple approach)
         setImageUrl(result);
         setImageLoading(false);
       };
@@ -55,11 +54,11 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && clues.every(clue => clue.trim())) {
-      const lastClue = imageUrl ? `${clues[4]} [Image: ${imageUrl}]` : clues[4];
-      const updatedClues = [...clues.slice(0, 4), lastClue];
+    if (name && clues.every(clue => clue.trim()) && imageUrl) {
+      // Create all clues array including the image-only clue at the end
+      const allClues = [...clues, `[Image: ${imageUrl}]`];
       
-      addWinner({ name, clues: updatedClues });
+      addWinner({ name, clues: allClues });
       
       toast({
         title: "Winner Added",
@@ -67,12 +66,18 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       });
       
       setName('');
-      setClues(['', '', '', '', '']);
+      setClues(['', '', '', '']);
       setImageUrl('');
       
       if (onComplete) {
         onComplete();
       }
+    } else {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all text clues and upload an image for the final clue.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -105,7 +110,7 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       ))}
 
       <div>
-        <label className="block text-sm font-medium mb-2">Upload Image for Last Clue (max 100KB)</label>
+        <label className="block text-sm font-medium mb-2">Clue 5 - Upload Image (max 100KB)</label>
         <div className="flex items-center gap-4">
           <Input
             type="file"
@@ -113,6 +118,7 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
             onChange={handleImageUpload}
             className="hidden"
             id="image-upload"
+            required
           />
           <label 
             htmlFor="image-upload" 
