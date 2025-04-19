@@ -5,6 +5,10 @@ interface Winner {
   name: string;
   clues: string[];
   imageUrl?: string;
+  socialMedia?: {
+    instagram?: string;
+    twitter?: string;
+  };
 }
 
 interface AdminPanelContextType {
@@ -18,7 +22,6 @@ const AdminPanelContext = createContext<AdminPanelContextType | undefined>(undef
 export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [winners, setWinners] = useState<Winner[]>([]);
 
-  // Load winners from localStorage on initial render
   useEffect(() => {
     try {
       const savedWinners = localStorage.getItem('gameWinners');
@@ -31,29 +34,22 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
     }
   }, []);
 
-  // Save winners to localStorage whenever they change
   useEffect(() => {
     if (winners.length === 0) return;
     
     try {
-      // Only store the most recent winner to save space
       const mostRecentWinner = winners[winners.length - 1];
       
-      // Store directly without modifying clue content
-      // If localStorage exceeds quota, we'll handle it via try/catch
       try {
         localStorage.setItem('gameWinners', JSON.stringify([mostRecentWinner]));
       } catch (storageError) {
         console.error('Storage quota exceeded, trying with compressed data');
         
-        // If storage failed, try with reduced image data
         const processedClues = mostRecentWinner.clues.map(clue => {
           if (clue.includes('[Image:') && clue.length > 500) {
-            // Get the start of the image data, enough to display something
-            // but reduce storage requirements
             const imageStart = clue.indexOf('[Image:');
             const textPart = clue.substring(0, imageStart).trim();
-            return textPart; // Just keep the text part without image
+            return textPart;
           }
           return clue;
         });
@@ -68,7 +64,6 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
           console.warn('Stored winner with reduced image data');
         } catch (finalError) {
           console.error('Failed to store data even after compression:', finalError);
-          // Just store name and ID as last resort
           const minimalWinner = {
             id: mostRecentWinner.id,
             name: mostRecentWinner.name,
@@ -84,12 +79,10 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
   }, [winners]);
 
   const addWinner = (winner: Omit<Winner, 'id'>) => {
-    // Generate a new winner with ID
     const newWinner = {
       ...winner,
       id: Date.now().toString(),
     };
-    // We only keep the latest winner to prevent storage issues
     setWinners([newWinner]);
   };
 

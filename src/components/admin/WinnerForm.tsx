@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +16,8 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
   const [clues, setClues] = useState(['', '', '', '']);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [imageLoading, setImageLoading] = useState(false);
+  const [instagramUrl, setInstagramUrl] = useState('');
+  const [twitterUrl, setTwitterUrl] = useState('');
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,10 +56,16 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name && clues.every(clue => clue.trim()) && imageUrl) {
-      // Create all clues array including the image-only clue at the end
       const allClues = [...clues, `[Image: ${imageUrl}]`];
       
-      addWinner({ name, clues: allClues });
+      addWinner({ 
+        name, 
+        clues: allClues,
+        socialMedia: {
+          instagram: instagramUrl,
+          twitter: twitterUrl
+        }
+      });
       
       toast({
         title: "Winner Added",
@@ -68,6 +75,8 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
       setName('');
       setClues(['', '', '', '']);
       setImageUrl('');
+      setInstagramUrl('');
+      setTwitterUrl('');
       
       if (onComplete) {
         onComplete();
@@ -108,6 +117,24 @@ export const WinnerForm = ({ onComplete }: WinnerFormProps) => {
           />
         </div>
       ))}
+
+      <div>
+        <label className="block text-sm font-medium mb-2">Social Media Links</label>
+        <div className="space-y-2">
+          <Input
+            value={instagramUrl}
+            onChange={(e) => setInstagramUrl(e.target.value)}
+            placeholder="Instagram URL (optional)"
+            type="url"
+          />
+          <Input
+            value={twitterUrl}
+            onChange={(e) => setTwitterUrl(e.target.value)}
+            placeholder="Twitter URL (optional)"
+            type="url"
+          />
+        </div>
+      </div>
 
       <div>
         <label className="block text-sm font-medium mb-2">Clue 5 - Upload Image (max 100KB)</label>

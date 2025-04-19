@@ -27,12 +27,26 @@ const GameStatus: React.FC = () => {
             </p>
             <p className="text-xl font-bold text-mystery-600 mb-2">{currentWinner.name}</p>
             <div className="flex gap-4 mb-4">
-              <a href="#" className="text-gray-600 hover:text-pink-600 transition-colors">
-                <Instagram className="w-6 h-6" />
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
-                <Twitter className="w-6 h-6" />
-              </a>
+              {currentWinner.socialMedia?.instagram && (
+                <a 
+                  href={currentWinner.socialMedia.instagram} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-pink-600 transition-colors"
+                >
+                  <Instagram className="w-6 h-6" />
+                </a>
+              )}
+              {currentWinner.socialMedia?.twitter && (
+                <a 
+                  href={currentWinner.socialMedia.twitter} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-blue-500 transition-colors"
+                >
+                  <Twitter className="w-6 h-6" />
+                </a>
+              )}
             </div>
             <p className="text-lg font-semibold text-mystery-500 mb-6">
               You're in the {ranking}!
