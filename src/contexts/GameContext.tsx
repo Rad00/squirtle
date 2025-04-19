@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { useAdminPanel } from './AdminPanelContext';
 
 interface GameContextType {
   currentClue: number;
@@ -17,35 +18,29 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-// The mystery person to guess - change this for a new winning person
-const MYSTERY_PERSON = "Lana Rhoades";
-
-// All clues in order of reveal - change these clues for a new person
-const ALL_CLUES = [
-  "Gender: Female, Age: 28, Ethnicity: Slovenian",
-  "PH rank: 4, Video views: 2.5B, Subscribers: 1.2M",
-  "Most famous for: Breaking into mainstream media with podcast appearances and cryptocurrency ventures",
-  "Name rhyme: Banana Roads",
-  "Picture: [Admin to provide]"
-];
-
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentClue, setCurrentClue] = useState(0);
   const [attempts, setAttempts] = useState(1);
-  const [maxAttempts] = useState(2); // Changed from 3 to 2
+  const [maxAttempts] = useState(2);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
   const [guessValue, setGuessValue] = useState('');
   
-  // Get currently revealed clues
-  const revealedClues = ALL_CLUES.slice(0, currentClue + 1);
+  // Get the latest winner from AdminPanelContext
+  const { winners } = useAdminPanel();
+  const currentWinner = winners.length > 0 ? winners[winners.length - 1] : null;
+  
+  // Get currently revealed clues from the current winner
+  const revealedClues = currentWinner 
+    ? currentWinner.clues.slice(0, currentClue + 1)
+    : [];
 
   const checkGuess = () => {
-    if (isGameOver) return;
+    if (isGameOver || !currentWinner) return;
     
     // Normalize guesses for case-insensitive comparison
     const normalizedGuess = guessValue.trim().toLowerCase();
-    const normalizedAnswer = MYSTERY_PERSON.toLowerCase();
+    const normalizedAnswer = currentWinner.name.toLowerCase();
     
     if (normalizedGuess === normalizedAnswer) {
       // Correct guess!
@@ -60,12 +55,12 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Wrong guess
       if (attempts >= maxAttempts) {
         // Used all attempts for this clue
-        if (currentClue >= ALL_CLUES.length - 1) {
+        if (currentClue >= (currentWinner.clues.length - 1)) {
           // No more clues, game over
           setIsGameOver(true);
           toast({
             title: "Game Over!",
-            description: `The correct answer was ${MYSTERY_PERSON}.`,
+            description: `The correct answer was ${currentWinner.name}.`,
             variant: "destructive",
           });
         } else {
@@ -127,4 +122,3 @@ export const useGame = () => {
   }
   return context;
 };
-

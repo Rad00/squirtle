@@ -1,13 +1,16 @@
 
 import React from 'react';
 import { useGame } from '@/contexts/GameContext';
+import { useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Button } from '@/components/ui/button';
 import { Sparkles, RefreshCw } from 'lucide-react';
 
 const GameStatus: React.FC = () => {
   const { isGameOver, isWinner, resetGame } = useGame();
+  const { winners } = useAdminPanel();
+  const currentWinner = winners.length > 0 ? winners[winners.length - 1] : null;
 
-  if (!isGameOver) return null;
+  if (!isGameOver || !currentWinner) return null;
 
   return (
     <div className="mt-8 p-6 bg-card border border-border rounded-lg shadow-lg animate-fade-in">
@@ -26,7 +29,7 @@ const GameStatus: React.FC = () => {
           <>
             <h2 className="text-2xl font-bold text-destructive mb-2">Game Over</h2>
             <p className="text-center mb-6">
-              The mystery person was <span className="font-bold text-clue-400">Lana Rhoades</span>.
+              The mystery person was <span className="font-bold text-clue-400">{currentWinner.name}</span>.
             </p>
           </>
         )}

@@ -6,6 +6,7 @@ import ClueCard from '@/components/ClueCard';
 import GuessInput from '@/components/GuessInput';
 import GameStatus from '@/components/GameStatus';
 import { Sparkles } from 'lucide-react';
+import { AdminPanelProvider } from '@/contexts/AdminPanelContext';
 
 const GameBoard: React.FC = () => {
   const { revealedClues } = useGame();
@@ -43,9 +44,11 @@ const GameBoard: React.FC = () => {
 const Index: React.FC = () => {
   return (
     <div className="min-h-screen w-full">
-      <GameProvider>
-        <GameBoard />
-      </GameProvider>
+      <AdminPanelProvider>
+        <GameProvider>
+          <GameBoard />
+        </GameProvider>
+      </AdminPanelProvider>
     </div>
   );
 };
