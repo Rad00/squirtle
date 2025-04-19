@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface Winner {
@@ -21,28 +20,36 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
 
   // Load winners from localStorage on initial render
   useEffect(() => {
-    const savedWinners = localStorage.getItem('gameWinners');
-    if (savedWinners) {
-      try {
+    try {
+      const savedWinners = localStorage.getItem('gameWinners');
+      if (savedWinners) {
         const parsedWinners = JSON.parse(savedWinners);
         setWinners(parsedWinners);
-      } catch (error) {
-        console.error('Error parsing saved winners:', error);
       }
+    } catch (error) {
+      console.error('Error loading winners from localStorage:', error);
     }
   }, []);
 
   // Save winners to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('gameWinners', JSON.stringify(winners));
+    try {
+      // Store only the most recent winner to avoid exceeding storage quota
+      const winnersToStore = winners.length > 0 ? [winners[winners.length - 1]] : [];
+      localStorage.setItem('gameWinners', JSON.stringify(winnersToStore));
+    } catch (error) {
+      console.error('Error saving winners to localStorage:', error);
+    }
   }, [winners]);
 
   const addWinner = (winner: Omit<Winner, 'id'>) => {
+    // When adding a new winner, remove all previous ones to save space
     const newWinner = {
       ...winner,
       id: Date.now().toString(),
     };
-    setWinners([...winners, newWinner]);
+    // We only keep the latest winner to prevent storage issues
+    setWinners([newWinner]);
   };
 
   const removeWinner = (id: string) => {

@@ -58,13 +58,21 @@ const GameBoard: React.FC = () => {
   );
 };
 
+// Wrap the GameBoard in AdminPanelProvider and GameProvider
+const GameProviderWrapper: React.FC = () => {
+  return (
+    <GameProvider>
+      <GameBoard />
+    </GameProvider>
+  );
+};
+
+// The main component that wraps everything with AdminPanelProvider
 const Index: React.FC = () => {
   return (
     <div className="min-h-screen w-full">
       <AdminPanelProvider>
-        <GameProvider>
-          <GameBoard />
-        </GameProvider>
+        <GameProviderWrapper />
       </AdminPanelProvider>
     </div>
   );
