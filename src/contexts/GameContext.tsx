@@ -36,7 +36,14 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     : [];
 
   const checkGuess = () => {
-    if (isGameOver || !currentWinner) return;
+    if (isGameOver || !currentWinner) {
+      toast({
+        title: "No Game Available",
+        description: "Please add a mystery person in the Admin Panel first.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     // Normalize guesses for case-insensitive comparison
     const normalizedGuess = guessValue.trim().toLowerCase();
