@@ -22,11 +22,11 @@ const MYSTERY_PERSON = "Lana Rhoades";
 
 // All clues in order of reveal - change these clues for a new person
 const ALL_CLUES = [
-  "Gender: Female",
-  "Country of birth: Slovenia",
-  "Age: 28",
-  "PH rank: 4",
-  "PH video views: 2.5 Billion"
+  "Gender: Female, Age: 28, Ethnicity: Slovenian",
+  "PH rank: 4, Video views: 2.5B, Subscribers: 1.2M",
+  "Most famous for: Breaking into mainstream media with podcast appearances and cryptocurrency ventures",
+  "Name rhyme: Banana Roads",
+  "Picture: [Admin to provide]"
 ];
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -127,3 +127,4 @@ export const useGame = () => {
   }
   return context;
 };
+
