@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface ClueCardProps {
@@ -8,6 +8,9 @@ interface ClueCardProps {
 }
 
 const ClueCard: React.FC<ClueCardProps> = ({ clue, index }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
   // Check if the clue contains an image URL
   const hasImage = clue.includes('[Image:');
   
@@ -15,11 +18,29 @@ const ClueCard: React.FC<ClueCardProps> = ({ clue, index }) => {
   let imageUrl = null;
   if (hasImage) {
     const match = clue.match(/\[Image:\s*(.*?)\]/);
-    imageUrl = match ? match[1] : null;
+    if (match && match[1]) {
+      // Handle potentially truncated base64 data
+      imageUrl = match[1];
+      // Check if the base64 string is cut off
+      if (imageUrl.endsWith('...') || imageUrl.endsWith('...]')) {
+        console.warn("Image data appears to be truncated");
+      }
+    }
   }
   
   // Extract the text portion of the clue
   const textClue = hasImage ? clue.replace(/\[Image:\s*.*?\]/, '').trim() : clue;
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    console.error("Error loading image:", imageUrl);
+    setImageError(true);
+    // Hide the broken image
+    (e.target as HTMLImageElement).style.display = 'none';
+  };
 
   return (
     <div 
@@ -32,17 +53,23 @@ const ClueCard: React.FC<ClueCardProps> = ({ clue, index }) => {
         </div>
         <span className="text-lg font-medium">{textClue}</span>
       </div>
-      {imageUrl && (
+      {hasImage && imageUrl && !imageError && (
         <div className="mt-2">
           <img 
             src={imageUrl} 
-            alt="Clue" 
+            alt="Clue Image" 
             className="max-w-full h-auto rounded-lg object-contain" 
-            onError={(e) => {
-              console.error("Error loading image:", imageUrl);
-              (e.target as HTMLImageElement).style.display = 'none';
-            }}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
           />
+          {!imageLoaded && (
+            <div className="text-sm text-muted-foreground">Loading image...</div>
+          )}
+        </div>
+      )}
+      {hasImage && imageError && (
+        <div className="p-2 bg-muted rounded-md text-sm">
+          The image for this clue couldn't be displayed.
         </div>
       )}
     </div>

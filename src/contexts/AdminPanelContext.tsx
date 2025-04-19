@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface Winner {
@@ -40,24 +39,45 @@ export const AdminPanelProvider: React.FC<{ children: ReactNode }> = ({ children
       // Only store the most recent winner to save space
       const mostRecentWinner = winners[winners.length - 1];
       
-      // Compress image data if needed
-      let winnerToStore = mostRecentWinner;
-      
-      // Check if clues contain large image data and truncate if necessary
-      const processedClues = mostRecentWinner.clues.map(clue => {
-        if (clue.includes('[Image:') && clue.length > 1000) {
-          // Truncate image data if it's too large
-          return clue.substring(0, 1000) + '...]';
+      // Store directly without modifying clue content
+      // If localStorage exceeds quota, we'll handle it via try/catch
+      try {
+        localStorage.setItem('gameWinners', JSON.stringify([mostRecentWinner]));
+      } catch (storageError) {
+        console.error('Storage quota exceeded, trying with compressed data');
+        
+        // If storage failed, try with reduced image data
+        const processedClues = mostRecentWinner.clues.map(clue => {
+          if (clue.includes('[Image:') && clue.length > 500) {
+            // Get the start of the image data, enough to display something
+            // but reduce storage requirements
+            const imageStart = clue.indexOf('[Image:');
+            const textPart = clue.substring(0, imageStart).trim();
+            return textPart; // Just keep the text part without image
+          }
+          return clue;
+        });
+        
+        const compressedWinner = {
+          ...mostRecentWinner,
+          clues: processedClues
+        };
+        
+        try {
+          localStorage.setItem('gameWinners', JSON.stringify([compressedWinner]));
+          console.warn('Stored winner with reduced image data');
+        } catch (finalError) {
+          console.error('Failed to store data even after compression:', finalError);
+          // Just store name and ID as last resort
+          const minimalWinner = {
+            id: mostRecentWinner.id,
+            name: mostRecentWinner.name,
+            clues: mostRecentWinner.clues.map(c => c.includes('[Image:') ? 
+              c.substring(0, c.indexOf('[Image:')) : c)
+          };
+          localStorage.setItem('gameWinners', JSON.stringify([minimalWinner]));
         }
-        return clue;
-      });
-      
-      winnerToStore = {
-        ...mostRecentWinner,
-        clues: processedClues
-      };
-      
-      localStorage.setItem('gameWinners', JSON.stringify([winnerToStore]));
+      }
     } catch (error) {
       console.error('Error saving winners to localStorage:', error);
     }
