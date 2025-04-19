@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { GameProvider } from '@/contexts/GameContext';
 import { useGame } from '@/contexts/GameContext';
@@ -30,7 +29,7 @@ const GameBoard: React.FC = () => {
           <Sparkles className="ml-2 text-clue-300 w-6 h-6" />
         </h1>
         <p className="text-muted-foreground">
-          Reveal clues and guess the mystery person
+          Guess today's adult actor
         </p>
       </div>
 
