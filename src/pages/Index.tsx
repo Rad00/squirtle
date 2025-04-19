@@ -9,7 +9,6 @@ import { Sparkles } from 'lucide-react';
 import { AdminPanelProvider } from '@/contexts/AdminPanelContext';
 import { useAdminPanel } from '@/contexts/AdminPanelContext';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import Image from 'next/image';
 
 const GameBoard: React.FC = () => {
   const { revealedClues } = useGame();
@@ -85,4 +84,3 @@ const Index: React.FC = () => {
 };
 
 export default Index;
-
